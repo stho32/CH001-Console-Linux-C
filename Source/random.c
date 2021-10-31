@@ -6,13 +6,10 @@
 #include <stdio.h>
 #include <time.h>
 
-void using_rand() {
-    srand(time(NULL));
-    int r = rand() % 10;
-    printf("random number using rand: %d\n", r);
-}
-
 int main(void) {
-    using_rand();
+    srand(time(NULL));
+    int randomNumber = rand() % 10;
+    printf("random number using rand: %d\n", randomNumber);
+    return 0;
 }
 
