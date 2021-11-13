@@ -10,6 +10,7 @@
 
 const char *argp_program_version = "random 0.1";
 const char *argp_program_bug_address = "<stho32github@gmail.com>";
+static char args_doc[] = "[FILENAME]...";
 static char doc[] = "A random stuff generator like described in Challenge CH001";
 
 /**
@@ -22,31 +23,21 @@ static char doc[] = "A random stuff generator like described in Challenge CH001"
  * - random animal        : generate a random animal name
  */
 static struct argp_option options[] = {
-    {.name = "number",
-     .key = 'n',
-     .arg = 0,
-     .flags = 0,
-     .doc = "generate a random number"},
-    {.name = "password",
-     .key = 'p',
-     .arg = 0,
-     .flags = 0,
-     .doc = "generate a password"},
-    {.name = "animal",
-     .key = 'a',
-     .arg = 0,
-     .flags = 0,
-     .doc = "generate a random animal"},
-    {0}};
+    {"number", 'n', 0, 0, "generate a random number"},
+    {"password", 'p', 0, 0, "generate a password"},
+    {"animal",'a', 0, 0, "generate a random animal"},
+    {0}
+};
+
+enum modes {
+    NUMBER_MODE,
+    PASSWORD_MODE,
+    ANIMAL_MODE
+};
 
 struct arguments
 {
-    enum
-    {
-        NUMBER_MODE,
-        PASSWORD_MODE,
-        ANIMAL_MODE
-    } mode;
+    enum modes mode;
 };
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state)
@@ -69,40 +60,25 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
     return 0;
 }
 
-/*
-static struct argp argp = {
-    options, 
-    parse_opt, 
-    args_doc, 
-    doc, 
-    0, 
-    0, 
-    0};*/
-
-enum modusEnum {
-    MODE_BLA = 1,
-    MODE_BLUBBER = 2,
-    MODE_NOCHEINEOPTION = 3
-};
-
-enum colors {
-    COLOR_RED = 1,
-    COLOR_BLUE = 2
-};
+static struct argp argp = { options, parse_opt, args_doc, doc, 0, 0, 0 };
 
 int main(int argc, char *argv[])
 {
-    struct arguments arguments;
+    struct arguments args;
+    argp_parse(&argp, argc, argv, 0, 0, &args);
 
-    enum modusEnum mode = COLOR_BLUE;
-    enum colors color = COLOR_BLUE;
-    int i = "w";
+    switch (args.mode) {
 
-/*
-    arguments.mode = CHARACTER_MODE;
-    arguments.isCaseInsensitive = false;
-*/
-    //argp_parse(&argp, argc, argv, 0, 0, &arguments);
+        case NUMBER_MODE:
+            printf("NUMBER MODE");
+            break;
+        case PASSWORD_MODE:
+            printf("PASSWORD MODE");
+            break;
+        case ANIMAL_MODE:
+            printf("ANIMAL MODE");
+            break;
+    }
 
     srand(time(NULL));
     int randomNumber = rand() % 10;
